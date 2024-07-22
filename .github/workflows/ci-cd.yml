@@ -12,7 +12,7 @@ on:
 
 jobs:
   feature-merge-dev:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+    if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -20,7 +20,7 @@ jobs:
       - run: echo "$(cat hello_world.txt)"
   
   feature-merge-test:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/test'
+    if: github.ref == 'refs/heads/test'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -34,4 +34,3 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
       - run: echo "$(cat hello_world.txt)"
-    workflow_dispatch: # Allows manual trigger
