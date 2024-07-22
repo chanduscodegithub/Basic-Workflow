@@ -5,13 +5,15 @@ on:
     branches:
       - dev
   pull_request:
+    types:
+      - closed
     branches:
       - dev
-  workflow_dispatch: # Allows manual trigger for PRs into dev
+  workflow_dispatch: # Allows manual trigger
 
 jobs:
   on-merge-to-dev:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -19,8 +21,8 @@ jobs:
       - name: Print hello_world.txt
         run: cat hello_world.txt
 
-  pr-to-dev:
-    if: github.event_name == 'pull_request' && github.base_ref == 'dev'
+  push-to-dev:
+    if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
