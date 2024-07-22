@@ -1,16 +1,29 @@
 name: hello-world
 
 on:
+  push:
+    branches:
+      - dev
   pull_request:
     branches:
-      - develop
-    types:
-      - closed
+      - dev
+  workflow_dispatch: # Allows manual trigger for PRs into dev
 
 jobs:
-  if_merged:
-    if: github.event.pull_request.merged == true
-    runs-on: macos-14
+  on-merge-to-dev:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
     steps:
-    - run: |
-        echo The PR was merged
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Print hello_world.txt
+        run: cat hello_world.txt
+
+  pr-to-dev:
+    if: github.event_name == 'pull_request' && github.base_ref == 'dev'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Print hello_world.txt
+        run: cat hello_world.txt
