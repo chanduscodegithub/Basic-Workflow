@@ -1,34 +1,28 @@
 name: hello-world
 
+name: Pull Request Merged to Develop
+
 on:
   push:
     branches:
-      - dev
+      - develop
   pull_request:
+    branches:
+      - develop
     types:
       - closed
-    branches:
-      - dev
   workflow_dispatch: # Allows manual trigger
 
 jobs:
-  on-merge-to-dev:
-    if: github.event.pull_request.merged == true
+  if-merged:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged == true }}
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-      - name: Echo hello world
-        run: echo "hello world"
+      - name: Echo success message
+        run: echo "The PR was successfully merged."
 
-  push-to-dev:
-    if: github.ref == 'refs/heads/dev'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - name: Echo hello world
-        run: echo "hello world"
 
   manual-trigger:
     if: github.event_name == 'workflow_dispatch'
