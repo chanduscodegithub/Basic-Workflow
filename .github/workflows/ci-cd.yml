@@ -1,7 +1,5 @@
 name: hello-world
 
-name: Pull Request Merged to Develop
-
 on:
   push:
     branches:
@@ -16,13 +14,12 @@ on:
 jobs:
   if-merged:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged == true }}
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
       - name: Echo success message
         run: echo "The PR was successfully merged."
-
 
   manual-trigger:
     if: github.event_name == 'workflow_dispatch'
