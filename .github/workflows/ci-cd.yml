@@ -1,4 +1,4 @@
-name: CI/CD Workflow
+name: hello-world
 
 on:
   push:
@@ -8,32 +8,30 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch: # Allows manual trigger for the main branch PRs
 
 jobs:
   feature-merge-dev:
     if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Run echo
-        run: echo "Hello World from dev"
-
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: echo "$(cat hello_world.txt)"
+  
   feature-merge-test:
     if: github.event_name == 'push' && github.ref == 'refs/heads/test'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Run echo
-        run: echo "Hello World from test"
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: echo "$(cat hello_world.txt)"
 
   pr-main:
     if: github.event_name == 'pull_request' && github.base_ref == 'main'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Run echo
-        run: echo "Hello World from main (manual trigger)"
-    workflow_dispatch:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: echo "$(cat hello_world.txt)"
+    workflow_dispatch: # Allows manual trigger
