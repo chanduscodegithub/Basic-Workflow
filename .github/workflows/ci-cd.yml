@@ -13,7 +13,7 @@ on:
 
 jobs:
   on-merge-to-dev:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -28,13 +28,3 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
       - name: Echo hello world
-        run: echo "hello world"
-
-  manual-trigger:
-    if: github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - name: Echo hello world
-        run: echo "hello world"
