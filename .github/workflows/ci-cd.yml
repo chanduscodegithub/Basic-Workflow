@@ -18,8 +18,8 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-      - name: Print hello_world.txt
-        run: cat hello_world.txt
+      - name: Echo hello world
+        run: echo "hello world"
 
   push-to-dev:
     if: github.ref == 'refs/heads/dev'
@@ -27,5 +27,5 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-      - name: Print hello_world.txt
-        run: cat hello_world.txt
+      - name: Echo hello world
+        run: echo "hello world"
