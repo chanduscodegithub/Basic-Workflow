@@ -1,0 +1,36 @@
+name: hello-world
+
+on:
+  push:
+    branches:
+      - dev
+      - test
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  push-to-dev:
+    if: github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Echo hello world for dev
+        run: echo "hello world from dev"
+
+  push-to-test:
+    if: github.ref == 'refs/heads/test'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Echo hello world for test
+        run: echo "hello world from test"
+
+  manual-trigger:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Echo hello world
+        run: echo "hello world"
