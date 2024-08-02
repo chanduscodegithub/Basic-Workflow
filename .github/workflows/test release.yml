@@ -1,4 +1,4 @@
-name: Build, Upload and Deploy API for Release Testing
+name: Build, Upload and Deploy API for Release 
 
 on:
   push:
@@ -15,10 +15,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Create api.md file
+      - name: api.md file
         run: echo "This is a test API file" > api/api.md
-
-      # Commented out the actual step
+   
       # - name: Cache Maven Dependencies
       #   uses: actions/cache@v3
       #   with:
@@ -26,11 +25,8 @@ jobs:
       #     key: ${{ runner.os }}-maven-${{ hashFiles('api/**/pom.xml') }}
       #     restore-keys: |
       #       ${{ runner.os }}-maven-
-
       - name: Echo Cache Maven Dependencies
-        run: echo "Simulating cache maven dependencies"
-
-      # Commented out the actual step
+        run: echo " cache maven dependencies" 
       # - name: Set up JDK 1.8
       #   uses: actions/setup-java@v3
       #   with:
@@ -38,9 +34,7 @@ jobs:
       #     java-version: 8
 
       - name: Echo Set up JDK 1.8
-        run: echo "Simulating setup of JDK 1.8"
-
-      # Commented out the actual step
+        run: echo "setup of JDK 1.8"
       # - name: Build with Maven
       #   working-directory: api
       #   env:
@@ -52,9 +46,7 @@ jobs:
       #   run: mvn -B package -s ../.maven/settings.xml -DskipTests
 
       - name: Echo Build with Maven
-        run: echo "Simulating build with Maven"
-
-      # Commented out the actual step
+        run: echo " build with Maven"
       # - name: Stamp Artifact with Commit Hash
       #   working-directory: api
       #   run: |
@@ -64,7 +56,7 @@ jobs:
       #     mv $artifactName1 $artifactName2
 
       - name: Echo Stamp Artifact with Commit Hash
-        run: echo "Simulating stamping artifact with commit hash"
+        run: echo " stamping artifact with commit hash"
 
       - name: Upload API Artifact
         uses: actions/upload-artifact@v3
@@ -82,9 +74,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Echo Cache Maven Dependencies
-        run: echo "Simulating cache maven dependencies"
-
-      # Commented out the actual step
+        run: echo " cache maven dependencies"
       # - name: Cache Maven Dependencies
       #   uses: actions/cache@v3
       #   with:
@@ -92,17 +82,13 @@ jobs:
       #     key: ${{ runner.os }}-maven-${{ hashFiles('api/**/pom.xml') }}
       #     restore-keys: |
       #       ${{ runner.os }}-maven-
-
-      # Commented out the actual step
       # - name: Download API Artifact
       #   uses: actions/download-artifact@v3
       #   with:
       #     name: api-artifact
 
       - name: Echo Download API Artifact
-        run: echo "Simulating download API artifact"
-
-      # Commented out the actual step
+        run: echo " download API artifact"
       # - name: Upload API Artifact to Exchange
       #   working-directory: api
       #   run: |
@@ -113,7 +99,7 @@ jobs:
       #     mvn deploy -s ../.maven/settings.xml -Dmule.artifact=$artifactName -Dclient.id=$ANYPOINT_CLIENT_ID -Dclient.secret=$ANYPOINT_CLIENT_SECRET
 
       - name: Echo Upload API Artifact to Exchange
-        run: echo "Simulating upload API artifact to Exchange"
+        run: echo " upload API artifact to Exchange"
 
   deploy_api:
     name: Deploy API to Test Environment
@@ -125,9 +111,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Echo Cache Maven Dependencies
-        run: echo "Simulating cache maven dependencies"
-
-      # Commented out the actual step
+        run: echo " cache maven dependencies"
       # - name: Cache Maven Dependencies
       #   uses: actions/cache@v3
       #   with:
@@ -135,17 +119,13 @@ jobs:
       #     key: ${{ runner.os }}-maven-${{ hashFiles('api/**/pom.xml') }}
       #     restore-keys: |
       #       ${{ runner.os }}-maven-
-
-      # Commented out the actual step
       # - name: Download API Artifact
       #   uses: actions/download-artifact@v3
       #   with:
       #     name: api-artifact
 
       - name: Echo Download API Artifact
-        run: echo "Simulating download API artifact"
-
-      # Commented out the actual step
+        run: echo " download API artifact"
       # - name: Find Artifact File
       #   id: find-artifact
       #   run: |
@@ -153,18 +133,16 @@ jobs:
       #     echo "artifact_name=$artifactName" >> $GITHUB_ENV
 
       - name: Echo Find Artifact File
-        run: echo "Simulating finding artifact file"
+        run: echo " finding artifact file"
 
-      # Commented out the actual step
       # - name: Read pom.xml
       #   id: read-pom
       #   run: |
       #     echo "appName=$(mvn help:evaluate -Dexpression=project.name -q -DforceStdout)" >> $GITHUB_ENV
 
       - name: Echo Read pom.xml
-        run: echo "Simulating reading pom.xml"
+        run: echo " reading pom.xml"
 
-      # Commented out the actual step
       # - name: Deploy API to Test Environment
       #   working-directory: api
       #   env:
@@ -180,4 +158,4 @@ jobs:
       #     -Ddefault.public.url=true -Denvironment=DEV -Dmule.artifact=$artifactName -Danypoint.client_id=$client_id -DtargetName=non-prod-ps
 
       - name: Echo Deploy API to Test Environment
-        run: echo "Simulating deployment of API to Test Environment"
+        run: echo " deployment of API to Test Environment"
