@@ -1,0 +1,161 @@
+name: Build, Upload and Deploy API for Release 
+
+on:
+  push:
+    branches: 
+      - dev
+    paths:
+      - 'api3/**'
+
+jobs:
+  build_api:
+    if: contains(github.event.head_commit.message, 'api')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: api.md file
+        run: echo "This is a test API file" > api/api.md
+   
+      # - name: Cache Maven Dependencies
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ~/.m2/repository
+      #     key: ${{ runner.os }}-maven-${{ hashFiles('api/**/pom.xml') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-maven-
+      - name: Echo Cache Maven Dependencies
+        run: echo " cache maven dependencies" 
+      # - name: Set up JDK 1.8
+      #   uses: actions/setup-java@v3
+      #   with:
+      #     distribution: 'zulu'
+      #     java-version: 8
+
+      - name: Echo Set up JDK 1.8
+        run: echo "setup of JDK 1.8"
+      # - name: Build with Maven
+      #   working-directory: api
+      #   env:
+      #     NEXUS_USERNAME: ${{ secrets.NEXUSUSERNAME }}
+      #     NEXUS_PASSWORD: ${{ secrets.NEXUSPASSWORD }}
+      #     CONNECTED_APP_CLIENT_ID: ${{ secrets.CONNECTED_APP_CLIENTID }}
+      #     CONNECTED_APP_CLIENT_SECRET: ${{ secrets.CONNECTED_APP_CLIENTSECRET }}
+      #     DECRYPTION_KEY: ${{ secrets.DECRYPTION_KEY }}
+      #   run: mvn -B package -s ../.maven/settings.xml -DskipTests
+
+      - name: Echo Build with Maven
+        run: echo " build with Maven"
+      # - name: Stamp Artifact with Commit Hash
+      #   working-directory: api
+      #   run: |
+      #     artifactName1=$(ls target/*.jar | head -1)
+      #     commitHash=$(git rev-parse --short "$GITHUB_SHA")
+      #     artifactName2=$(echo $artifactName1 | sed "s/.jar/-$commitHash.jar/")
+      #     mv $artifactName1 $artifactName2
+
+      - name: Echo Stamp Artifact with Commit Hash
+        run: echo " stamping artifact with commit hash"
+
+      - name: Upload API Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: api-artifact
+          path: api/api.md
+
+  upload_api:
+    name: Upload API Artifact to Exchange
+    if: github.ref == 'refs/heads/release'
+    needs: build_api
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Echo Cache Maven Dependencies
+        run: echo " cache maven dependencies"
+      # - name: Cache Maven Dependencies
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ~/.m2/repository
+      #     key: ${{ runner.os }}-maven-${{ hashFiles('api/**/pom.xml') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-maven-
+      # - name: Download API Artifact
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: api-artifact
+
+      - name: Echo Download API Artifact
+        run: echo " download API artifact"
+      # - name: Upload API Artifact to Exchange
+      #   working-directory: api
+      #   run: |
+      #     artifactName=$(ls target/*.jar | head -1)
+      #     echo "$(ls *.jar)"
+      #     artifactName=$(ls target/*.jar | head -1)
+      #     echo "$artifactName"
+      #     mvn deploy -s ../.maven/settings.xml -Dmule.artifact=$artifactName -Dclient.id=$ANYPOINT_CLIENT_ID -Dclient.secret=$ANYPOINT_CLIENT_SECRET
+
+      - name: Echo Upload API Artifact to Exchange
+        run: echo " upload API artifact to Exchange"
+
+  deploy_api:
+    name: Deploy API to Test Environment
+    needs: upload_api
+    if: github.ref == 'refs/heads/release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Echo Cache Maven Dependencies
+        run: echo " cache maven dependencies"
+      # - name: Cache Maven Dependencies
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ~/.m2/repository
+      #     key: ${{ runner.os }}-maven-${{ hashFiles('api/**/pom.xml') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-maven-
+      # - name: Download API Artifact
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: api-artifact
+
+      - name: Echo Download API Artifact
+        run: echo " download API artifact"
+      # - name: Find Artifact File
+      #   id: find-artifact
+      #   run: |
+      #     artifactName=$(ls *.md | head -1)
+      #     echo "artifact_name=$artifactName" >> $GITHUB_ENV
+
+      - name: Echo Find Artifact File
+        run: echo " finding artifact file"
+
+      # - name: Read pom.xml
+      #   id: read-pom
+      #   run: |
+      #     echo "appName=$(mvn help:evaluate -Dexpression=project.name -q -DforceStdout)" >> $GITHUB_ENV
+
+      - name: Echo Read pom.xml
+        run: echo " reading pom.xml"
+
+      # - name: Deploy API to Test Environment
+      #   working-directory: api
+      #   env:
+      #     client_id: ${{ secrets.ANYPOINTCLIENT_ID }}
+      #     client_secret: ${{ secrets.ANYPOINTCLIENT_SECRET }}
+      #     KEY: ${{ secrets.DECRYPTION_KEY }}
+      #   run: |
+      #     echo "$(ls *.jar)"
+      #     artifactName=$(ls target/*.jar | head -1)
+      #     echo "$artifactName"
+      #     mvn mule:deploy -s .maven/settings.xml -DskipMunitTests -DappName=erp-event-listner-cicd \
+      #     -Dmule.env=dev -Danypoint.client_secret=$client_secret -Ddecryption.key=Interface@2024 -DworkerSize=0.1 -Dreplica=1 -DmuleVersion=4.7.1 \
+      #     -Ddefault.public.url=true -Denvironment=DEV -Dmule.artifact=$artifactName -Danypoint.client_id=$client_id -DtargetName=non-prod-ps
+
+      - name: Echo Deploy API to Test Environment
+        run: echo " deployment of API to Test Environment"
