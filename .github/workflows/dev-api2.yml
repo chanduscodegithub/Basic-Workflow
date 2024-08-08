@@ -3,9 +3,9 @@ name: Build, Upload and Deploy API for Release
 on:
   push:
     branches: 
-      - release
+      - dev
     paths:
-      - 'api/**'
+      - 'api2/**'
 
 jobs:
   build_api:
