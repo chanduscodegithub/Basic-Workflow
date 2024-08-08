@@ -5,7 +5,7 @@ on:
     branches: 
       - release
     paths:
-      - 'api/**'
+      - 'api1/**'
 
 jobs:
   build_api:
